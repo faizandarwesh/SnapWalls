@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:snap_walls/account_screen.dart';
-import 'package:snap_walls/explore_screen.dart';
-import 'package:snap_walls/home_screen.dart';
+import 'package:snap_walls/pages/account_screen.dart';
+import 'package:snap_walls/pages/explore_screen.dart';
+import 'package:snap_walls/pages/home_screen.dart';
 
 class LandingScreen extends StatefulWidget {
   const LandingScreen({super.key});

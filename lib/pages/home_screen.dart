@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:snap_walls/wallpaper_tile.dart';
+import 'package:snap_walls/widgets/wallpaper_tile.dart';
 
 class HomeScreen extends StatefulWidget {
 

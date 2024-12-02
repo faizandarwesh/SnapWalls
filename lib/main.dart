@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snap_walls/landing_screen.dart';
+import 'package:snap_walls/pages/landing_screen.dart';
 
 void main() {
   runApp(const MyApp());
