@@ -1,9 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:snap_walls/wallpaper_tile.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+
+  final Function(bool) isScrolling;
+  const HomeScreen({super.key, required this.isScrolling});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+  bool _isVisible = true;
+  final ScrollController _scrollController = ScrollController();
+  
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener((){
+      if(_scrollController.position.userScrollDirection == ScrollDirection.reverse){
+        if(_isVisible){
+          _isVisible = false;
+          widget.isScrolling(_isVisible);
+        }
+      }
+
+      if(_scrollController.position.userScrollDirection == ScrollDirection.forward){
+        if(!_isVisible){
+          _isVisible = true;
+          widget.isScrolling(_isVisible);
+        }
+      }
+
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,6 +44,7 @@ class HomeScreen extends StatelessWidget {
       body: DefaultTabController(
         length: 3,
         child: NestedScrollView(
+          controller: _scrollController,
           headerSliverBuilder: (context, isInnerBoxScrolling) {
             return [
               SliverAppBar(
