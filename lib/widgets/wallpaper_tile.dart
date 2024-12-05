@@ -14,13 +14,18 @@ class WallpaperTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
-        clipBehavior: Clip.antiAlias,
-        height: extent,
-        child: CachedNetworkImage(
-          imageUrl: imageUrl,
-          fit: BoxFit.cover,
-        ));
+    return GestureDetector(
+      onTap: (){
+        
+      },
+      child: Container(
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
+          clipBehavior: Clip.antiAlias,
+          height: extent,
+          child: CachedNetworkImage(
+            imageUrl: imageUrl,
+            fit: BoxFit.cover,
+          )),
+    );
   }
 }
