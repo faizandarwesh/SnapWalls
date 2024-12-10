@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:snap_walls/services/wallpaper_api_service.dart';
@@ -55,6 +56,16 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                       downloadWallpaper();
                     }),
               )),
+          Positioned(
+              bottom: 8,
+              right: 8,
+              child: FloatingActionButton(
+                  child: const Icon(Icons.settings),
+                  onPressed: () async{
+            const platform =  MethodChannel('versionChannel');
+            final platformVersion = await platform.invokeMethod('getPlatformVersion');
+            print("platformVersion : $platformVersion");
+          })),
           if(isDownloadingStart) ... [
             Positioned(
                 top: 150,
