@@ -1,6 +1,6 @@
-# Snap Wall Flutter Project
+# SnapWalls Flutter Project
 
-Snap Wall is a Flutter application designed to provide users with a stunning collection of wallpapers. Users can explore, download, and favorite wallpapers seamlessly while enjoying a user-friendly experience.
+SnapWalls is a Flutter application designed to provide users with a stunning collection of wallpapers. Users can explore, download, and favorite wallpapers seamlessly while enjoying a user-friendly experience.
 
 ---
 
