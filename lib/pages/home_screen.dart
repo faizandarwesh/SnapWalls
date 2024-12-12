@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     indicatorColor: Colors.purple,
                     indicatorWeight: 4,
                     tabs: [
-                      Tab(text: "Suggestions"),
+                      Tab(text: "Favorites"),
                       Tab(text: "Like"),
                       Tab(
                         text: "Library",

@@ -27,6 +27,8 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
   double percentage = 0.0;
   double _percentage = 0.0;
 
+  static const serviceMethodChannel =  MethodChannel("DownloadServiceChannel");
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,16 +59,41 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                     }),
               )),
           Positioned(
+              top: 200,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    width: 250,
+                    height: 80,
+                    child: ElevatedButton(onPressed: () async{
+                      await serviceMethodChannel.invokeMethod("startForegroundService");
+                    }, child: const Text("Start")),
+                  ),
+                  const SizedBox(height: 16,),
+                  Container(
+                    width: 250,
+                    height: 80,
+                    padding: const EdgeInsets.all(10),
+                    child: ElevatedButton(onPressed: () async{
+                     await serviceMethodChannel.invokeMethod("stopForegroundService");
+                    }, child: const Text("Stop")),
+                  ),
+                ],
+              )),
+          Positioned(
               bottom: 8,
               right: 8,
               child: FloatingActionButton(
                   child: const Icon(Icons.settings),
-                  onPressed: () async{
-            const platform =  MethodChannel('versionChannel');
-            final platformVersion = await platform.invokeMethod('getPlatformVersion');
-            print("platformVersion : $platformVersion");
-          })),
-          if(isDownloadingStart) ... [
+                  onPressed: () async {
+                    const platform = MethodChannel('versionChannel');
+                    final platformVersion =
+                        await platform.invokeMethod('getPlatformVersion');
+                    print("platformVersion : $platformVersion");
+                  })),
+          if (isDownloadingStart) ...[
             Positioned(
                 top: 150,
                 left: 16,
@@ -96,7 +123,9 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                           decoration: BoxDecoration(
                             color: Colors.grey[300],
                             borderRadius: BorderRadius.circular(15),
-                            border: Border.all(color: Theme.of(context).primaryColor, width: 1),
+                            border: Border.all(
+                                color: Theme.of(context).primaryColor,
+                                width: 1),
                           ),
                         ),
 
@@ -149,7 +178,6 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
           _percentage = percentage / 100;
 
           setState(() {
-
             isDownloadingStart = true;
             /*downloadMessage =
                 "Downloading... ${percentage.toStringAsFixed(0)} : %";*/
@@ -168,5 +196,4 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
     var status = await Permission.storage.request();
     return status.isGranted;
   }
-
 }
