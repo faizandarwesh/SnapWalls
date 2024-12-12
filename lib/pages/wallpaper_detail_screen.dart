@@ -3,9 +3,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:snap_walls/services/wallpaper_api_service.dart';
+
+import '../utils/app_constants.dart';
 
 class WallpaperDetailPage extends StatefulWidget {
   final String imageUrl;
@@ -27,7 +30,16 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
   double percentage = 0.0;
   double _percentage = 0.0;
 
+  late BannerAd _bannerAd;
+  bool _isAdLoaded = false;
+
   static const serviceMethodChannel =  MethodChannel("DownloadServiceChannel");
+
+  @override
+  void initState() {
+    _initBannerAd();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +95,7 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                 ],
               )),
           Positioned(
-              bottom: 8,
+              bottom: 100,
               right: 8,
               child: FloatingActionButton(
                   child: const Icon(Icons.settings),
@@ -93,6 +105,16 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                         await platform.invokeMethod('getPlatformVersion');
                     print("platformVersion : $platformVersion");
                   })),
+          if(_isAdLoaded) ... [
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child:  SizedBox(
+                  width: _bannerAd.size.width.toDouble(),
+                  height: _bannerAd.size.height.toDouble(),
+                  child: AdWidget(ad: _bannerAd)),),
+          ],
           if (isDownloadingStart) ...[
             Positioned(
                 top: 150,
@@ -190,6 +212,22 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
     } else {
       print("Permission not granted");
     }
+  }
+
+  void _initBannerAd() {
+    _bannerAd = BannerAd(
+        size: AdSize.banner,
+        adUnitId: "ca-app-pub-3940256099942544/6300978111",
+        listener: BannerAdListener(
+            onAdLoaded: (ad) {
+              setState(() {
+                _isAdLoaded = true;
+              });
+            },
+            onAdFailedToLoad: (ad, error) {}),
+        request: const AdRequest());
+
+    _bannerAd.load();
   }
 
   Future<bool> requestStoragePermission() async {

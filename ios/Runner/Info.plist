@@ -4,6 +4,8 @@
 <dict>
     <key>NSPhotoLibraryAddUsageDescription</key>
     <string>We need your permission to save wallpapers to your photo library.</string>
+    <key>GADApplicationIdentifier</key>
+    <string>ca-app-pub-5221040291893862~7858745113</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>We need access to your photo library for saving wallpapers.</string>
 	<key>CFBundleDevelopmentRegion</key>

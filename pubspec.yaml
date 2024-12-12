@@ -41,6 +41,7 @@ dependencies:
   infinite_scroll_pagination: ^4.1.0
   permission_handler: ^11.3.1
   path_provider: ^2.1.5
+  google_mobile_ads: ^5.2.0
 
 dev_dependencies:
   flutter_test:
