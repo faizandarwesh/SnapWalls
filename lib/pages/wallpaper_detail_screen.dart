@@ -76,55 +76,81 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                     }),
               )),
           Positioned(
-              top: 200,
+              top: 300,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(10),
-                    width: 200,
+                    padding: const EdgeInsets.symmetric(horizontal: 32,vertical: 10),
+                    width: MediaQuery.of(context).size.width,
                     height: 75,
                     child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:  Theme.of(context).primaryColor, // Button background color
+                          foregroundColor: Colors.white, // Text color
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8), // Slightly rounded corners
+                          ),
+                          elevation: 5, // Shadow effect for a better look
+                          padding: const EdgeInsets.all(16), // Inner padding for better spacing
+                        ),
                         onPressed: () async {
                           await serviceMethodChannel
                               .invokeMethod("startForegroundService");
                         },
-                        child: const Text("Start")),
+                        child: const Text("Start Foreground Service")),
                   ),
                   const SizedBox(
                     height: 16,
                   ),
                   Container(
-                    width: 200,
+                    width: MediaQuery.of(context).size.width,
                     height: 75,
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.symmetric(horizontal: 32,vertical: 10),
                     child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:  Theme.of(context).primaryColor, // Button background color
+                          foregroundColor: Colors.white, // Text color
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8), // Slightly rounded corners
+                          ),
+                          elevation: 5, // Shadow effect for a better look
+                          padding: const EdgeInsets.all(16), // Inner padding for better spacing
+                        ),
                         onPressed: () async {
                           await serviceMethodChannel
                               .invokeMethod("stopForegroundService");
                         },
-                        child: const Text("Stop")),
+                        child: const Text("Stop Foreground Service")),
                   ),
                 ],
               )),
           Positioned(
               bottom: 200,
-              right: 8,
               child: Container(
-                padding: const EdgeInsets.all(10),
-                width: 200,
+                padding: const EdgeInsets.symmetric(horizontal: 32,vertical: 10),
+                width: MediaQuery.of(context).size.width,
                 height: 75,
                 child: ElevatedButton(
-                    child: const Text("InterstitialAd"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor, // Button background color
+                      foregroundColor: Colors.white, // Text color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8), // Slightly rounded corners
+                      ),
+                      elevation: 5, // Shadow effect for a better look
+                      padding: const EdgeInsets.all(16), // Inner padding for better spacing
+                    ),
                     onPressed: () async {
                       if (isInterstitialAdLoaded) {
                         _interstitialAd.show();
                       }
-                    }),
+                    },
+                    child: const Text("InterstitialAd")),
               )),
           Positioned(
-              bottom: 100,
+              bottom: 70,
               right: 8,
               child: FloatingActionButton(
                   heroTag: null,
