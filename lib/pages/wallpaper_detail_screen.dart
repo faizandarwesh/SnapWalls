@@ -30,14 +30,18 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
   double percentage = 0.0;
   double _percentage = 0.0;
 
+  late InterstitialAd _interstitialAd;
+  bool isInterstitialAdLoaded = false;
+
   late BannerAd _bannerAd;
   bool _isAdLoaded = false;
 
-  static const serviceMethodChannel =  MethodChannel("DownloadServiceChannel");
+  static const serviceMethodChannel = MethodChannel("DownloadServiceChannel");
 
   @override
   void initState() {
     _initBannerAd();
+    _initInterstitialAd();
     super.initState();
   }
 
@@ -62,6 +66,7 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
               right: 16,
               child: SafeArea(
                 child: FloatingActionButton(
+                  heroTag: null,
                     child: const Icon(
                       Icons.download,
                       color: Colors.purple,
@@ -74,46 +79,72 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
               top: 200,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     padding: const EdgeInsets.all(10),
-                    width: 250,
-                    height: 80,
-                    child: ElevatedButton(onPressed: () async{
-                      await serviceMethodChannel.invokeMethod("startForegroundService");
-                    }, child: const Text("Start")),
+                    width: 200,
+                    height: 75,
+                    child: ElevatedButton(
+                        onPressed: () async {
+                          await serviceMethodChannel
+                              .invokeMethod("startForegroundService");
+                        },
+                        child: const Text("Start")),
                   ),
-                  const SizedBox(height: 16,),
+                  const SizedBox(
+                    height: 16,
+                  ),
                   Container(
-                    width: 250,
-                    height: 80,
+                    width: 200,
+                    height: 75,
                     padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(onPressed: () async{
-                     await serviceMethodChannel.invokeMethod("stopForegroundService");
-                    }, child: const Text("Stop")),
+                    child: ElevatedButton(
+                        onPressed: () async {
+                          await serviceMethodChannel
+                              .invokeMethod("stopForegroundService");
+                        },
+                        child: const Text("Stop")),
                   ),
                 ],
+              )),
+          Positioned(
+              bottom: 200,
+              right: 8,
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                width: 200,
+                height: 75,
+                child: ElevatedButton(
+                    child: const Text("InterstitialAd"),
+                    onPressed: () async {
+                      if (isInterstitialAdLoaded) {
+                        _interstitialAd.show();
+                      }
+                    }),
               )),
           Positioned(
               bottom: 100,
               right: 8,
               child: FloatingActionButton(
+                  heroTag: null,
                   child: const Icon(Icons.settings),
                   onPressed: () async {
-                    const platform = MethodChannel('versionChannel');
+                      const platform = MethodChannel('versionChannel');
                     final platformVersion =
                         await platform.invokeMethod('getPlatformVersion');
                     print("platformVersion : $platformVersion");
                   })),
-          if(_isAdLoaded) ... [
+          if (_isAdLoaded) ...[
             Positioned(
               bottom: 0,
               left: 0,
               right: 0,
-              child:  SizedBox(
+              child: SizedBox(
                   width: _bannerAd.size.width.toDouble(),
                   height: _bannerAd.size.height.toDouble(),
-                  child: AdWidget(ad: _bannerAd)),),
+                  child: AdWidget(ad: _bannerAd)),
+            ),
           ],
           if (isDownloadingStart) ...[
             Positioned(
@@ -233,5 +264,18 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
   Future<bool> requestStoragePermission() async {
     var status = await Permission.storage.request();
     return status.isGranted;
+  }
+
+  void _initInterstitialAd() {
+    InterstitialAd.load(
+        adUnitId: "ca-app-pub-3940256099942544/1033173712",
+        request: const AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+            onAdLoaded: onAdLoaded, onAdFailedToLoad: (error) {}));
+  }
+
+  void onAdLoaded(InterstitialAd ad) {
+    _interstitialAd = ad;
+    isInterstitialAdLoaded = true;
   }
 }
