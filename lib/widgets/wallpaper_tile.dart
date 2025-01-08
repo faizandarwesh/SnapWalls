@@ -32,6 +32,7 @@ class WallpaperTile extends StatelessWidget {
             child: CachedNetworkImage(
               imageUrl: imageUrl,
               fit: BoxFit.cover,
+              placeholder: (context,url) => const Center(child: CircularProgressIndicator.adaptive(),),
             )),
       ),
     );
