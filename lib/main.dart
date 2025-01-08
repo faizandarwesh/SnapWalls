@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:snap_walls/pages/landing_screen.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
+  await FlutterDownloader.initialize(debug: true,ignoreSsl: true);
   runApp(const MyApp());
 }
 

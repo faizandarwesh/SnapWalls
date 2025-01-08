@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:snap_walls/pages/account_screen.dart';
-import 'package:snap_walls/pages/explore_screen.dart';
 import 'package:snap_walls/pages/home_screen.dart';
+import '../camera/ui/take_photo_screen.dart';
 
 class LandingScreen extends StatefulWidget {
   const LandingScreen({super.key});
@@ -23,7 +23,7 @@ class _LandingScreenState extends State<LandingScreen> {
       HomeScreen(
         isScrolling: isScrolling,
       ),
-      const ExploreScreen(),
+      const TakePhotoScreen(),
       const AccountScreen()
     ];
   }
@@ -62,7 +62,7 @@ class _LandingScreenState extends State<LandingScreen> {
                   BottomNavigationBarItem(
                       icon: Icon(Icons.home), label: "Home"),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.explore_rounded), label: "Explore"),
+                      icon: Icon(Icons.camera), label: "Camera"),
                   BottomNavigationBarItem(
                       icon: Icon(Icons.account_circle_rounded),
                       label: "Account"),

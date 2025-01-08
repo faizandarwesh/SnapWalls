@@ -1,14 +1,13 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:snap_walls/services/wallpaper_api_service.dart';
-
-import '../utils/app_constants.dart';
 
 class WallpaperDetailPage extends StatefulWidget {
   final String imageUrl;
@@ -35,6 +34,8 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
 
   late BannerAd _bannerAd;
   bool _isAdLoaded = false;
+
+  late String taskId;
 
   static const serviceMethodChannel = MethodChannel("DownloadServiceChannel");
 
@@ -65,35 +66,59 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
               top: 8,
               right: 16,
               child: SafeArea(
-                child: FloatingActionButton(
-                  heroTag: null,
-                    child: const Icon(
-                      Icons.download,
-                      color: Colors.purple,
-                    ),
-                    onPressed: () {
-                      downloadWallpaper();
-                    }),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    FloatingActionButton(
+                        heroTag: null,
+                        child: const Icon(
+                          Icons.download,
+                          color: Colors.purple,
+                        ),
+                        onPressed: () {
+                          downloadWallpaperShowingNotification(
+                              widget.imageUrl);
+                          //downloadWallpaper();
+                        }),
+                    const SizedBox(width: 16,),
+                    FloatingActionButton(
+                        heroTag: null,
+                        child: const Icon(
+                          Icons.slideshow_outlined,
+                          color: Colors.purple,
+                        ),
+                        onPressed: () {
+                          FlutterDownloader.open(taskId: taskId);
+                          //downloadWallpaper();
+                        }),
+                  ],
+                ),
               )),
-          Positioned(
+       /*   Positioned(
               top: 300,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 32,vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32, vertical: 10),
                     width: MediaQuery.of(context).size.width,
                     height: 75,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:  Theme.of(context).primaryColor, // Button background color
-                          foregroundColor: Colors.white, // Text color
+                          backgroundColor: Colors.deepPurple,
+                          // Button background color
+                          foregroundColor: Colors.white,
+                          // Text color
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8), // Slightly rounded corners
+                            borderRadius: BorderRadius.circular(
+                                8), // Slightly rounded corners
                           ),
-                          elevation: 5, // Shadow effect for a better look
-                          padding: const EdgeInsets.all(16), // Inner padding for better spacing
+                          elevation: 5,
+                          // Shadow effect for a better look
+                          padding: const EdgeInsets.all(
+                              16), // Inner padding for better spacing
                         ),
                         onPressed: () async {
                           await serviceMethodChannel
@@ -107,16 +132,22 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     height: 75,
-                    padding: const EdgeInsets.symmetric(horizontal: 32,vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32, vertical: 10),
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:  Theme.of(context).primaryColor, // Button background color
-                          foregroundColor: Colors.white, // Text color
+                          backgroundColor: Colors.deepPurple,
+                          // Button background color
+                          foregroundColor: Colors.white,
+                          // Text color
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8), // Slightly rounded corners
+                            borderRadius: BorderRadius.circular(
+                                8), // Slightly rounded corners
                           ),
-                          elevation: 5, // Shadow effect for a better look
-                          padding: const EdgeInsets.all(16), // Inner padding for better spacing
+                          elevation: 5,
+                          // Shadow effect for a better look
+                          padding: const EdgeInsets.all(
+                              16), // Inner padding for better spacing
                         ),
                         onPressed: () async {
                           await serviceMethodChannel
@@ -129,18 +160,24 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
           Positioned(
               bottom: 200,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 32,vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 10),
                 width: MediaQuery.of(context).size.width,
                 height: 75,
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).primaryColor, // Button background color
-                      foregroundColor: Colors.white, // Text color
+                      backgroundColor: Colors.deepPurple,
+                      // Button background color
+                      foregroundColor: Colors.white,
+                      // Text color
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8), // Slightly rounded corners
+                        borderRadius: BorderRadius.circular(
+                            8), // Slightly rounded corners
                       ),
-                      elevation: 5, // Shadow effect for a better look
-                      padding: const EdgeInsets.all(16), // Inner padding for better spacing
+                      elevation: 5,
+                      // Shadow effect for a better look
+                      padding: const EdgeInsets.all(
+                          16), // Inner padding for better spacing
                     ),
                     onPressed: () async {
                       if (isInterstitialAdLoaded) {
@@ -156,11 +193,11 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                   heroTag: null,
                   child: const Icon(Icons.settings),
                   onPressed: () async {
-                      const platform = MethodChannel('versionChannel');
+                    const platform = MethodChannel('versionChannel');
                     final platformVersion =
                         await platform.invokeMethod('getPlatformVersion');
-                    print("platformVersion : $platformVersion");
-                  })),
+                    debugPrint("platformVersion : $platformVersion");
+                  })),*/
           if (_isAdLoaded) ...[
             Positioned(
               bottom: 0,
@@ -261,13 +298,13 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
             /*downloadMessage =
                 "Downloading... ${percentage.toStringAsFixed(0)} : %";*/
           });
-          print("Downloading...  ${percentage.toStringAsFixed(0)} : %");
+          debugPrint("Downloading...  ${percentage.toStringAsFixed(0)} : %");
         }
-        print("Path : ${directory.path}");
-        print("nothing");
+        debugPrint("Path : ${directory.path}");
+        debugPrint("nothing");
       });
     } else {
-      print("Permission not granted");
+      debugPrint("Permission not granted");
     }
   }
 
@@ -303,5 +340,31 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
   void onAdLoaded(InterstitialAd ad) {
     _interstitialAd = ad;
     isInterstitialAdLoaded = true;
+  }
+
+  void downloadWallpaperShowingNotification(String url) async {
+
+    String fileName = 'file_${Random().nextInt(100000)}.jpeg';
+    var directory = await getApplicationSupportDirectory();
+
+     await FlutterDownloader.enqueue(
+      url: url,
+      savedDir: directory.path,
+      fileName: fileName,
+      // Optional: define a filename
+      showNotification: true,
+      // Optional: show a notification with progress
+      openFileFromNotification: true, // Optional: open the file when tapped
+    ).then((value) => taskId = value!);
+
+
+    debugPrint('Download task id: $taskId');
+
+ //  FlutterDownloader.pause(taskId: taskId!);
+
+   /* FlutterDownloader.resume(taskId: taskId!);
+
+    FlutterDownloader.open(taskId: taskId);*/
+
   }
 }
