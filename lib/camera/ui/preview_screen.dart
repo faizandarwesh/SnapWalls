@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class PreviewScreen extends StatefulWidget {
   final String imagePath;
 
-  const PreviewScreen({Key? key, required this.imagePath}) : super(key: key);
+  const PreviewScreen({super.key, required this.imagePath});
 
   @override
   _PreviewScreenState createState() => _PreviewScreenState();
@@ -17,8 +17,8 @@ class _PreviewScreenState extends State<PreviewScreen> {
   void _addText() {
     setState(() {
       _overlays.add(
-        DraggableText(
-          initialPosition: const Offset(100, 100),
+        const DraggableText(
+          initialPosition: Offset(100, 100),
           text: "Your Text",
         ),
       );
@@ -106,10 +106,10 @@ class DraggableText extends StatefulWidget {
   final String text;
 
   const DraggableText({
-    Key? key,
+    super.key,
     required this.initialPosition,
     required this.text,
-  }) : super(key: key);
+  });
 
   @override
   _DraggableTextState createState() => _DraggableTextState();
@@ -154,10 +154,10 @@ class DraggableImage extends StatefulWidget {
   final String assetPath;
 
   const DraggableImage({
-    Key? key,
+    super.key,
     required this.initialPosition,
     required this.assetPath,
-  }) : super(key: key);
+  });
 
   @override
   _DraggableImageState createState() => _DraggableImageState();
