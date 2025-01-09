@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -54,11 +55,13 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
           Center(
             child: Hero(
               tag: widget.tag, // Use the same tag as in WallpaperTile
-              child: CachedNetworkImage(
-                width: double.infinity,
-                height: double.infinity,
-                imageUrl: widget.imageUrl,
-                fit: BoxFit.cover,
+              child: InteractiveViewer(
+                child: CachedNetworkImage(
+                  width: double.infinity,
+                  height: double.infinity,
+                  imageUrl: widget.imageUrl,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
@@ -66,34 +69,50 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
               top: 8,
               right: 16,
               child: SafeArea(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    FloatingActionButton(
-                        heroTag: null,
-                        child: const Icon(
-                          Icons.download,
-                          color: Colors.purple,
-                        ),
-                        onPressed: () {
-                          downloadWallpaperShowingNotification(
-                              widget.imageUrl);
-                          //downloadWallpaper();
-                        }),
-                    const SizedBox(width: 16,),
-                    FloatingActionButton(
-                        heroTag: null,
-                        child: const Icon(
-                          Icons.slideshow_outlined,
-                          color: Colors.purple,
-                        ),
-                        onPressed: () {
-                          FlutterDownloader.open(taskId: taskId);
-                          //downloadWallpaper();
-                        }),
-                  ],
-                ),
+                child: FloatingActionButton(
+                    heroTag: null,
+                    child: const Icon(
+                      Icons.cloud_download_outlined,
+                      color: Colors.purple,
+                    ),
+                    onPressed: () {
+                      downloadWallpaperShowingNotification(
+                          widget.imageUrl);
+                      //downloadWallpaper();
+                    }),
               )),
+          // Positioned(
+          //     top: 8,
+          //     right: 16,
+          //     child: SafeArea(
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //         children: [
+          //           FloatingActionButton(
+          //               heroTag: null,
+          //               child: const Icon(
+          //                 Icons.cloud_download_outlined,
+          //                 color: Colors.purple,
+          //               ),
+          //               onPressed: () {
+          //                 downloadWallpaperShowingNotification(
+          //                     widget.imageUrl);
+          //                 //downloadWallpaper();
+          //               }),
+          //           const SizedBox(width: 16,),
+          //           FloatingActionButton(
+          //               heroTag: null,
+          //               child: const Icon(
+          //                 Icons.slideshow_outlined,
+          //                 color: Colors.purple,
+          //               ),
+          //               onPressed: () {
+          //                 FlutterDownloader.open(taskId: taskId);
+          //                 //downloadWallpaper();
+          //               }),
+          //         ],
+          //       ),
+          //     )),
        /*   Positioned(
               top: 300,
               child: Column(
@@ -209,7 +228,7 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                   child: AdWidget(ad: _bannerAd)),
             ),
           ],
-          if (isDownloadingStart) ...[
+         /* if (isDownloadingStart) ...[
             Positioned(
                 top: 150,
                 left: 16,
@@ -274,7 +293,7 @@ class _WallpaperDetailPageState extends State<WallpaperDetailPage> {
                     ),
                   ],
                 ))
-          ]
+          ]*/
         ],
       ),
     );
