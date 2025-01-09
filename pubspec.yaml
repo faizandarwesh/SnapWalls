@@ -44,6 +44,7 @@ dependencies:
   google_mobile_ads: ^5.2.0
   camera: ^0.11.0+2
   flutter_downloader: ^1.11.8
+  flutter_dotenv: ^5.2.1
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +69,7 @@ flutter:
   assets:
     - shorebird.yaml
     - assets/images/
+    - .env
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:

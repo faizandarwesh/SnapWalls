@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:snap_walls/utils/app_constants.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../model/wallpaper.dart';
 
 class WallpaperApiService {
@@ -9,8 +9,8 @@ class WallpaperApiService {
   int perPage = 15;
 
   final dio = Dio(BaseOptions(
-    baseUrl: AppConstants.baseUrl,
-    headers: {'Authorization': AppConstants.apiKey},
+    baseUrl: dotenv.env['BASE_URL']!,
+    headers: {'Authorization': dotenv.env['API_KEY']},
   ));
 
    Future<List<Photo>> fetchWallpapers() async {
