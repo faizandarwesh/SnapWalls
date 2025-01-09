@@ -17,6 +17,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool _isVisible = true;
   final ScrollController _scrollController = ScrollController();
+  final ScrollController _gridViewScrollController = ScrollController();
+  final apiService = WallpaperApiService();
 
   @override
   void initState() {
@@ -38,6 +40,21 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       }
     });
+
+    // Add a listener to detect when the user scrolls to the bottom
+    _gridViewScrollController.addListener(() {
+      if (_gridViewScrollController.position.pixels >=
+          _gridViewScrollController.position.maxScrollExtent) {
+        apiService.fetchWallpapers();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+   _scrollController.dispose();
+   _gridViewScrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -75,10 +92,10 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               //Tab 1 : Wallpapers Grid
               FutureBuilder(
-                  future: WallpaperApiService().fetchWallpapers(),
+                  future: apiService.fetchWallpapers(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CupertinoActivityIndicator());
+                      return const Center(child: CircularProgressIndicator.adaptive());
                     } else if (snapshot.hasError) {
                       return const Center(
                         child: Text("Something went wrong!!!"),
@@ -87,6 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                       final photos = snapshot.data!;
                       return MasonryGridView.count(
+                        controller: _gridViewScrollController,
                         crossAxisCount: 2,
                         mainAxisSpacing: 10,
                         crossAxisSpacing: 10,

@@ -5,13 +5,18 @@ import '../model/wallpaper.dart';
 class WallpaperApiService {
 
   List<Photo> photos = [];
+  int page = 0;
+  int perPage = 15;
 
   final dio = Dio(BaseOptions(
     baseUrl: AppConstants.baseUrl,
     headers: {'Authorization': AppConstants.apiKey},
   ));
 
-   Future<List<Photo>> fetchWallpapers({int page = 1, int perPage = 15}) async {
+   Future<List<Photo>> fetchWallpapers() async {
+
+     page++;
+
     final response = await dio.get('search', queryParameters: {
       'query': 'nature',
       'page': page,
@@ -21,12 +26,16 @@ class WallpaperApiService {
     if (response.statusCode == 200) {
       // Parse the response and map it to the Photo model
       final data = response.data;
-      photos = (data['photos'] as List)
+      photos.addAll((data['photos'] as List)
           .map((photoJson) => Photo.fromJson(photoJson))
-          .toList();
+          .toList());
 
       return photos;
-    }  else {
+    }
+    if(response.statusCode == 429){
+      throw Exception("Too many requests");
+    }
+    else {
       throw Exception('Failed to fetch wallpapers: ${response.statusCode}');
     }
   }
