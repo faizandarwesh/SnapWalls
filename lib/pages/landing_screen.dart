@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:snap_walls/pages/account_screen.dart';
+import 'package:snap_walls/pages/settings_screen.dart';
 import 'package:snap_walls/pages/home_screen.dart';
 import '../camera/ui/take_photo_screen.dart';
 
@@ -24,7 +24,7 @@ class _LandingScreenState extends State<LandingScreen> {
         isScrolling: isScrolling,
       ),
       const TakePhotoScreen(),
-      const AccountScreen()
+      const SettingsScreen()
     ];
   }
 
@@ -64,8 +64,8 @@ class _LandingScreenState extends State<LandingScreen> {
                   BottomNavigationBarItem(
                       icon: Icon(Icons.camera), label: "Camera"),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.account_circle_rounded),
-                      label: "Account"),
+                      icon: Icon(Icons.settings),
+                      label: "Settings"),
                 ])
           ],
         ),
