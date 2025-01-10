@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'package:snap_walls/utils/app_helpers.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -72,7 +73,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           Icons.share_outlined,
                           'Share with friends',
                           'Tell your friends if you like it',
-                          () {}),
+                          () {
+                            AppHelpers.shareAppLink();
+                          }),
                       _buildSettingCard(Icons.email_outlined, 'Contact Us',
                           "Any questions? We'll help", () {}),
                       _buildSettingCard(Icons.security, 'Privacy Policy',
