@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:snap_walls/utils/app_helpers.dart';
 
+import '../utils/app_constants.dart';
+
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
@@ -77,7 +79,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             AppHelpers.shareAppLink();
                           }),
                       _buildSettingCard(Icons.email_outlined, 'Contact Us',
-                          "Any questions? We'll help", () {}),
+                          "Any questions? We'll help", () {
+                            _modalBottomSheetMenu(context);
+                          }),
                       _buildSettingCard(Icons.security, 'Privacy Policy',
                           'More about safety', () {}),
                       _buildSettingCard(Icons.sunny, 'Theme',
@@ -92,6 +96,60 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
+}
+
+void _modalBottomSheetMenu(BuildContext context){
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true, // Allows the bottom sheet to expand to fit the content
+    builder: (context) {
+      return DraggableScrollableSheet(
+        expand: false, // Prevents the bottom sheet from taking up the full screen by default
+        builder: (context, scrollController) {
+          return Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.0),
+                topRight: Radius.circular(16.0),
+              ),
+            ),
+            child: SingleChildScrollView(
+              controller: scrollController, // Allows scrolling when the content is larger
+              child: const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 8),
+                    Text(
+                      "Contact Us",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 24,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      AppConstants.dummyText,
+                      textAlign: TextAlign.start,
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      "For more information, please contact us at support@example.com or call us at +1-234-567-890.",
+                      textAlign: TextAlign.start,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    },
+  );
+
 }
 
 Widget _buildSettingCard(
