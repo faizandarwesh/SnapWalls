@@ -74,16 +74,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       _buildSettingCard(
                           Icons.share_outlined,
                           'Share with friends',
-                          'Tell your friends if you like it',
-                          () {
-                            AppHelpers.shareAppLink();
-                          }),
+                          'Tell your friends if you like it', () {
+                        AppHelpers.shareAppLink();
+                      }),
                       _buildSettingCard(Icons.email_outlined, 'Contact Us',
                           "Any questions? We'll help", () {
-                            _modalBottomSheetMenu(context);
-                          }),
-                      _buildSettingCard(Icons.security, 'Privacy Policy',
-                          'More about safety', () {}),
+                        _modalBottomSheetMenu(
+                            context, 'Contact Us', AppConstants.dummyText);
+                      }),
+                      _buildSettingCard(
+                          Icons.security, 'Privacy Policy', 'More about safety',
+                          () {
+                        _modalBottomSheetMenu(
+                            context, 'Privacy Policy', AppConstants.dummyText);
+                      }),
                       _buildSettingCard(Icons.sunny, 'Theme',
                           'Choose your preference', () {}, true),
                     ],
@@ -98,13 +102,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 }
 
-void _modalBottomSheetMenu(BuildContext context){
+void _modalBottomSheetMenu(BuildContext context, String title, String content) {
   showModalBottomSheet(
     context: context,
-    isScrollControlled: true, // Allows the bottom sheet to expand to fit the content
+    isScrollControlled: true,
+    // Allows the bottom sheet to expand to fit the content
     builder: (context) {
       return DraggableScrollableSheet(
-        expand: false, // Prevents the bottom sheet from taking up the full screen by default
+        expand: false,
+        // Prevents the bottom sheet from taking up the full screen by default
         builder: (context, scrollController) {
           return Container(
             decoration: const BoxDecoration(
@@ -115,28 +121,29 @@ void _modalBottomSheetMenu(BuildContext context){
               ),
             ),
             child: SingleChildScrollView(
-              controller: scrollController, // Allows scrolling when the content is larger
-              child: const Padding(
-                padding: EdgeInsets.all(16.0),
+              controller: scrollController,
+              // Allows scrolling when the content is larger
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Text(
-                      "Contact Us",
-                      style: TextStyle(
+                      title,
+                      style: const TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 24,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Text(
-                      AppConstants.dummyText,
+                      content,
                       textAlign: TextAlign.start,
                     ),
-                    SizedBox(height: 16),
-                    Text(
+                    const SizedBox(height: 16),
+                    const Text(
                       "For more information, please contact us at support@example.com or call us at +1-234-567-890.",
                       textAlign: TextAlign.start,
                     ),
@@ -149,7 +156,6 @@ void _modalBottomSheetMenu(BuildContext context){
       );
     },
   );
-
 }
 
 Widget _buildSettingCard(
