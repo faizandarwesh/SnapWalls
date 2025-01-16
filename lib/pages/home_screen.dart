@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:rive/rive.dart';
 import 'package:snap_walls/services/wallpaper_api_service.dart';
 import 'package:snap_walls/widgets/wallpaper_tile.dart';
 
@@ -19,6 +20,10 @@ class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
   final ScrollController _gridViewScrollController = ScrollController();
   final apiService = WallpaperApiService();
+
+  //Rive Animation related variables
+  Artboard? riveArtBoard;
+  late SMIInput<bool> isFavorite;
 
   @override
   void initState() {
@@ -52,8 +57,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-   _scrollController.dispose();
-   _gridViewScrollController.dispose();
+    _scrollController.dispose();
+    _gridViewScrollController.dispose();
     super.dispose();
   }
 
@@ -95,7 +100,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   future: apiService.fetchWallpapers(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator.adaptive());
+                      return const Center(
+                          child: CircularProgressIndicator.adaptive());
                     } else if (snapshot.hasError) {
                       return const Center(
                         child: Text("Something went wrong!!!"),
@@ -126,8 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
                   }),
               //Tab 2 : Liked View
-               const SizedBox(),
-
+             const SizedBox(),
               //Tab 3 : Library View
               const SizedBox(),
             ],
