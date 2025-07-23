@@ -7,6 +7,7 @@ import '../controller/wallpaper_tile_controller.dart';
 import '../pages/wallpaper_detail_screen.dart';
 
 class WallpaperTile extends StatefulWidget {
+  final int id;
   final String imageUrl;
   final int index;
   final double extent;
@@ -14,6 +15,7 @@ class WallpaperTile extends StatefulWidget {
 
   const WallpaperTile({
     super.key,
+    required this.id,
     required this.imageUrl,
     required this.index,
     required this.extent,
@@ -25,13 +27,14 @@ class WallpaperTile extends StatefulWidget {
 
 class _WallpaperTileState extends State<WallpaperTile> {
 
+  final WallpaperTileController controller = Get.put(WallpaperTileController());
+  RxBool isFavorite = false.obs;
+
   @override
   Widget build(BuildContext context) {
 
-    final WallpaperTileController controller = Get.put(WallpaperTileController(),tag: 'wallpaper_${widget.index}');
-
     return GestureDetector(
-      onDoubleTap: controller.toggleFavorite, // Trigger animation on double-tap
+      onDoubleTap: () => controller.toggleFavorite(widget.imageUrl,isFavorite), // Trigger animation on double-tap
       onTap: () {
         Navigator.push(
           context,
@@ -78,20 +81,6 @@ class _WallpaperTileState extends State<WallpaperTile> {
               ),
             );
           }),
-       /*   Obx(() {
-            if (controller.isFavorite(widget.imageUrl)) {
-              return const Positioned(
-                top: 8,
-                right: 8,
-                child: Icon(
-                  Icons.favorite,
-                  color: Colors.redAccent,
-                  size: 24,
-                ),
-              );
-            }
-            return const SizedBox.shrink();
-          }),*/
         ],
       ),
     );

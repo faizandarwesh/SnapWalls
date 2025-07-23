@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:rive/rive.dart';
 import 'package:snap_walls/services/wallpaper_api_service.dart';
@@ -20,10 +19,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _scrollController = ScrollController();
   final ScrollController _gridViewScrollController = ScrollController();
   final apiService = WallpaperApiService();
-
-  //Rive Animation related variables
-  Artboard? riveArtBoard;
-  late SMIInput<bool> isFavorite;
 
   @override
   void initState() {
@@ -119,6 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemBuilder: (context, index) {
                           final photo = photos[index];
                           return WallpaperTile(
+                            id : photo.id,
                             imageUrl: photo.url,
                             index: index,
                             extent: (index % 2) == 0 ? 300 : 150,

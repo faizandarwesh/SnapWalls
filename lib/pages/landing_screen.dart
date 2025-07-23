@@ -23,8 +23,8 @@ class _LandingScreenState extends State<LandingScreen> {
       HomeScreen(
         isScrolling: isScrolling,
       ),
-      const FavoritesScreen(),
-      const SettingsScreen()
+      FavoritesScreen(),
+      SettingsScreen()
     ];
   }
 
@@ -55,7 +55,6 @@ class _LandingScreenState extends State<LandingScreen> {
                 elevation: 0,
                 type: BottomNavigationBarType.fixed,
                 currentIndex: _currentIndex,
-                fixedColor: Colors.black,
                 iconSize: 25,
                 unselectedItemColor: Colors.grey,
                 items: const [

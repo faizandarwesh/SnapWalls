@@ -4,11 +4,11 @@ import 'package:get/get.dart';
 import 'package:rive/rive.dart';
 
 class WallpaperTileController extends GetxController {
+
   Rx<Artboard?> riveArtBoard = Rx<Artboard?>(null);  // Stores the loaded artboard
   RxBool showAnimation = false.obs;
   late SMIBool likeInput; // StateMachine input for animation
-
-  RxList favoriteList = [].obs;
+  RxList<String> favoriteList = <String>[].obs;
 
   @override
   void onInit() {
@@ -34,13 +34,16 @@ class WallpaperTileController extends GetxController {
 
   // Toggle the like state
   // Show the animation for 2-3 seconds
-   void toggleFavorite() {
-   /* if(favoriteList.contains(imageUrl)){
+    void toggleFavorite(String imageUrl, RxBool isFavorite) {
+    if(favoriteList.contains(imageUrl)){
       favoriteList.remove(imageUrl);
+      print("Removed: $imageUrl");
     }
     else{
       favoriteList.add(imageUrl);
-    }*/
+      isFavorite.value = true;
+      print("Added: $imageUrl");
+    }
 
     if (likeInput != null) {
       likeInput.value = true; // Trigger the animation
@@ -52,10 +55,7 @@ class WallpaperTileController extends GetxController {
     Timer(const Duration(seconds: 3), () {
       showAnimation.value = false; // Hide animation
     });
-  }
 
-  bool isFavorite(String imageUrl) {
-    return favoriteList.contains(imageUrl);
+    print("Current List: $favoriteList");
   }
-
 }
