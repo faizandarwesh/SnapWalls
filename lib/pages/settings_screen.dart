@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:snap_walls/utils/app_helpers.dart';
-
 import '../theme/theme_provider.dart';
 import '../utils/app_constants.dart';
 
@@ -197,7 +196,7 @@ Widget _buildSettingCard(
           style: Theme.of(context).textTheme.bodySmall,
         ),
         trailing: isSwitch
-            ? CupertinoSwitch(
+            ? Switch(
           value: themeMode == ThemeMode.dark,
           onChanged: (value) {
             themeNotifier.setTheme(

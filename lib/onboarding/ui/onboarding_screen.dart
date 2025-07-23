@@ -21,7 +21,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     },
     {
       'image':
-          'https://images.pexels.com/photos/7130485/pexels-photo-7130485.jpeg',
+          'https://images.pexels.com/photos/7130561/pexels-photo-7130561.jpeg',
       'title': 'Save Your Favorites',
       'subtitle': 'Mark and revisit your favorite wallpapers anytime.',
     },

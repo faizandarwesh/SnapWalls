@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controller/favorite_controller.dart';
+import 'package:snap_walls/controller/main_controller.dart';
 import '../widgets/wallpaper_tile.dart';
 
 class FavoritesScreen extends StatefulWidget {
@@ -10,18 +10,17 @@ class FavoritesScreen extends StatefulWidget {
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
 
-  final FavoritesController controller = Get.find();
+  final MainController controller =  Get.find<MainController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Favorites")),
       body: Obx(() {
-        final items = controller.favorites;
+        final items = controller.favoriteList;
         if (items.isEmpty) {
           return const Center(child: Text("No favorites yet."));
         }
-
         return GridView.builder(
           padding: const EdgeInsets.all(8),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

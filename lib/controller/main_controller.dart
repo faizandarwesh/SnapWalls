@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rive/rive.dart';
 
-class WallpaperTileController extends GetxController {
+class MainController extends GetxController {
 
   Rx<Artboard?> riveArtBoard = Rx<Artboard?>(null);  // Stores the loaded artboard
   RxBool showAnimation = false.obs;

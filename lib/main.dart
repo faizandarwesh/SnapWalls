@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:snap_walls/controller/main_controller.dart';
 import 'package:snap_walls/pages/landing_screen.dart';
 import 'package:snap_walls/theme/theme_provider.dart';
 import 'package:snap_walls/utils/app_initializer.dart';
 import 'package:get/get.dart';
-import 'controller/favorite_controller.dart';
 import 'onboarding/ui/onboarding_screen.dart';
 
 Future<void> main() async {
@@ -30,8 +30,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context,WidgetRef ref) {
 
     final themeMode = ref.watch(themeNotifierProvider);
-    Get.put(FavoritesController());
-
+    Get.put(MainController());
 
     return MaterialApp(
       title: 'SnapWalls',

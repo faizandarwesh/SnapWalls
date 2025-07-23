@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:rive/rive.dart';
+import 'package:rive/rive.dart' as rive;
 import 'package:snap_walls/services/wallpaper_api_service.dart';
 import 'package:snap_walls/widgets/wallpaper_tile.dart';
 
@@ -69,11 +69,10 @@ class _HomeScreenState extends State<HomeScreen> {
               SliverAppBar(
                 floating: true,
                 snap: true,
-                title: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: const BoxDecoration(
-                      color: Colors.grey, shape: BoxShape.circle),
+                title: SizedBox(
+                  width: 75,
+                  height: 75,
+                  child: Image.asset("assets/images/logo_text.png"),
                 ),
                 bottom: const TabBar(
                     indicatorColor: Colors.purple,
