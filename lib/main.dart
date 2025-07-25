@@ -17,8 +17,9 @@ Future<void> main() async {
   // Check if onboarding is completed
   final prefs = await SharedPreferences.getInstance();
   final showOnboarding = !(prefs.getBool('onboarding_done') ?? false);
+  Get.put(MainController());
 
-  runApp(ProviderScope(child: MyApp(showOnboarding: showOnboarding)));
+  runApp(ProviderScope(child: MyApp(showOnboarding: true)));
 }
 
 class MyApp extends ConsumerWidget {
@@ -30,7 +31,6 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context,WidgetRef ref) {
 
     final themeMode = ref.watch(themeNotifierProvider);
-    Get.put(MainController());
 
     return MaterialApp(
       title: 'SnapWalls',

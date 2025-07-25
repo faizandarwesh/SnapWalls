@@ -20,6 +20,18 @@ class _HomeScreenState extends State<HomeScreen> {
   final ScrollController _gridViewScrollController = ScrollController();
   final apiService = WallpaperApiService();
 
+  List<String> categories = [
+    'new',
+    'trending',
+    'nature',
+    'abstract',
+    'animals',
+  ];
+  String selectedCategory = 'nature';
+  List photos = [];
+  bool isLoading = false;
+  bool hasMore = true;
+
   @override
   void initState() {
     super.initState();
@@ -41,13 +53,55 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
 
-    // Add a listener to detect when the user scrolls to the bottom
-    _gridViewScrollController.addListener(() {
-      if (_gridViewScrollController.position.pixels >=
-          _gridViewScrollController.position.maxScrollExtent) {
-        apiService.fetchWallpapers();
+    _gridViewScrollController.addListener(_onScroll);
+    _fetchWallpapers(reset: true);
+  }
+
+  void _onScroll() {
+    if (_gridViewScrollController.position.pixels >=
+        _gridViewScrollController.position.maxScrollExtent - 200) {
+      if (!isLoading && hasMore) {
+        _fetchWallpapers();
       }
+    }
+  }
+
+  void _fetchWallpapers({bool reset = false}) async {
+    setState(() {
+      isLoading = true;
+      if (reset) hasMore = true;
     });
+    try {
+      final newPhotos = await apiService.fetchWallpapers(
+        category: selectedCategory,
+        reset: reset,
+      );
+      setState(() {
+        if (reset) {
+          photos = newPhotos;
+        } else {
+          photos.addAll(newPhotos.skip(photos.length));
+        }
+        hasMore = newPhotos.length >= apiService.perPage;
+      });
+    } catch (e) {
+      setState(() {
+        hasMore = false;
+      });
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  void _onCategorySelected(String category) {
+    if (category != selectedCategory) {
+      setState(() {
+        selectedCategory = category;
+      });
+      _fetchWallpapers(reset: true);
+    }
   }
 
   @override
@@ -87,49 +141,61 @@ class _HomeScreenState extends State<HomeScreen> {
               )
             ];
           },
-          body: TabBarView(
+          body: Column(
             children: [
-              //Tab 1 : Wallpapers Grid
-              FutureBuilder(
-                  future: apiService.fetchWallpapers(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                          child: CircularProgressIndicator.adaptive());
-                    } else if (snapshot.hasError) {
-                      return const Center(
-                        child: Text("Something went wrong!!!"),
-                      );
+              // Category chips
+              SizedBox(
+                height: 50,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  itemCount: categories.length,
+                  separatorBuilder: (_, __) => const SizedBox(width: 8),
+                  itemBuilder: (context, index) {
+                    final cat = categories[index];
+                    return ChoiceChip(
+                      label: Text(cat[0].toUpperCase() + cat.substring(1)),
+                      selected: selectedCategory == cat,
+                      onSelected: (_) => _onCategorySelected(cat),
+                    );
+                  },
+                ),
+              ),
+              // Wallpapers grid
+              Expanded(
+                child: Builder(
+                  builder: (context) {
+                    if (isLoading && photos.isEmpty) {
+                      return const Center(child: CircularProgressIndicator.adaptive());
+                    } else if (photos.isEmpty) {
+                      return const Center(child: Text("No Wallpaper found"));
                     }
-                    if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                      final photos = snapshot.data!;
-                      return MasonryGridView.count(
-                        controller: _gridViewScrollController,
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                        padding: const EdgeInsets.all(12),
-                        itemCount: photos.length,
-                        itemBuilder: (context, index) {
-                          final photo = photos[index];
-                          return WallpaperTile(
-                            id : photo.id,
-                            imageUrl: photo.url,
-                            index: index,
-                            extent: (index % 2) == 0 ? 300 : 150,
-                          );
-                        },
-                      );
-                    } else {
-                      return const Center(
-                        child: Text("No Wallpaper found"),
-                      );
-                    }
-                  }),
-              //Tab 2 : Liked View
-             const SizedBox(),
-              //Tab 3 : Library View
-              const SizedBox(),
+                    return MasonryGridView.count(
+                      controller: _gridViewScrollController,
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      padding: const EdgeInsets.all(12),
+                      itemCount: photos.length + (hasMore ? 1 : 0),
+                      itemBuilder: (context, index) {
+                        if (index == photos.length) {
+                          return const Center(child: Padding(
+                            padding: EdgeInsets.all(16),
+                            child: CircularProgressIndicator.adaptive(),
+                          ));
+                        }
+                        final photo = photos[index];
+                        return WallpaperTile(
+                          id: photo.id,
+                          imageUrl: photo.url,
+                          index: index,
+                          extent: (index % 2) == 0 ? 300 : 150,
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),

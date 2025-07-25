@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:rive/rive.dart';
+import 'package:snap_walls/data/favorites_storage.dart';
 
 class MainController extends GetxController {
 
@@ -14,6 +15,7 @@ class MainController extends GetxController {
   void onInit() {
     super.onInit();
     _loadRiveFile(); // Load Rive when the controller initializes
+    _loadFavorites(); // Load favorites from storage
   }
 
   // Load the Rive file and initialize the StateMachineController
@@ -32,16 +34,23 @@ class MainController extends GetxController {
     riveArtBoard.value = artBoard; // Assign the loaded artBoard
   }
 
+  void _loadFavorites() async {
+    final favorites = await FavoritesStorage.getFavorites();
+    favoriteList.assignAll(favorites);
+  }
+
   // Toggle the like state
   // Show the animation for 2-3 seconds
-    void toggleFavorite(String imageUrl, RxBool isFavorite) {
+    void toggleFavorite(String imageUrl, RxBool isFavorite) async {
     if(favoriteList.contains(imageUrl)){
       favoriteList.remove(imageUrl);
+      await FavoritesStorage.removeFavorite(imageUrl);
       print("Removed: $imageUrl");
     }
     else{
       favoriteList.add(imageUrl);
       isFavorite.value = true;
+      await FavoritesStorage.addFavorite(imageUrl);
       print("Added: $imageUrl");
     }
 
